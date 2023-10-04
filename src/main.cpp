@@ -46,7 +46,7 @@ void loop() {
     display.printf("BATT:%2d\n", pct);
     display.printf("DEP:%.2fWh\n", vesc.data.wattHours);
     display.printf("CHR:%.2fWh\n", vesc.data.wattHoursCharged);
-    if (pct > 100) {display.print("OVERVOLT!!!");}
+    if (vesc.data.inpVoltage > 54.6) {display.print("OVERVOLT!!!");}
   } else {
     display.clearDisplay();  
     display.setCursor(0,0);
