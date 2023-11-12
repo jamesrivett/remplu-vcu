@@ -13,7 +13,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 VescUart vesc;
 
 int calculateBatteryPercentage(float voltage) {
-  return 100 * ((voltage - 41.6) / 13);
+  return 12.2 * (voltage - 45.5);
 }
 
 void setup() {
@@ -42,8 +42,14 @@ void loop() {
   if ( vesc.getVescValues() ) {
     display.clearDisplay();
     display.setCursor(0,0);
-    int pct = calculateBatteryPercentage(vesc.data.inpVoltage);
-    display.printf("BATT:%2d\n", pct);
+
+    if (vesc.data.inpVoltage >= 54.6) {
+      display.printf("OVERVOLT!\n");
+    } else {
+      int pct = calculateBatteryPercentage(vesc.data.inpVoltage);
+      display.printf("BATT:%2d\n", pct);
+    }
+
     display.printf("DEP:%.2fWh\n", vesc.data.wattHours);
     display.printf("CHR:%.2fWh\n", vesc.data.wattHoursCharged);
     if (vesc.data.avgMotorCurrent >= 0) {
